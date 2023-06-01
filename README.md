@@ -7,7 +7,7 @@
   <a href="https://join.slack.com/t/birdopensource/shared_invite/zt-1wcrxb22t-lPw1jDjlpRAYNuefRV2AGw" rel="nofollow"><img src="https://img.shields.io/badge/slack-%23skate-F55C40.svg" alt="#skate Slack channel"></a>
 </p>
 
-Skate is a SQL generation and query library for Kotlin. I makes it easy to get your data as Kotlin data classes without the pitfalls of an ORM.
+Skate is a SQL generation and query library for Kotlin. It makes it easy to get your data as Kotlin data classes without the pitfalls of an ORM.
 
 ## Entity
 
@@ -57,7 +57,7 @@ sql:
 values:
   [User(...)]
 ```
-Unlike an ORM, `update` requires you specify exactly which fields to update.
+Unlike an ORM, `update` requires you to specify exactly which fields to update.
 ```kotlin
 User::class
   .update(
