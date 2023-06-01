@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/birdrides/mockingbird/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed"></a>
-  <a href="https://join.slack.com/t/birdopensource/shared_invite/zt-wogxij50-3ZM7F8ZxFXvPkE0j8xTtmw" rel="nofollow"><img src="https://img.shields.io/badge/slack-%23skate-F55C40.svg" alt="#skate Slack channel"></a>
+  <a href="https://join.slack.com/t/birdopensource/shared_invite/zt-1wcrxb22t-lPw1jDjlpRAYNuefRV2AGw" rel="nofollow"><img src="https://img.shields.io/badge/slack-%23skate-F55C40.svg" alt="#skate Slack channel"></a>
 </p>
 
 Skate is a SQL generation and query library for Kotlin. I makes it easy to get your data as Kotlin data classes without the pitfalls of an ORM.
