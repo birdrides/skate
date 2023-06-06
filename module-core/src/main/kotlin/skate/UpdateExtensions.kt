@@ -11,7 +11,7 @@ import kotlin.reflect.full.memberProperties
 
 // Insert
 inline fun <reified T : Any> KClass<T>.insert(vararg properties: KProperty1<T, *>): InsertWithoutSource<T> {
-  val table = Table(T::class)
+  val table = Table(this)
   val insertProperties = if (properties.isEmpty()) {
     T::class.memberProperties.filter { it.findAnnotation<Transient>() == null }
   } else {
@@ -88,7 +88,7 @@ fun <T : Any> InsertConflictActionWithProjections<T>.generate(dialect: Dialect) 
 // with<Nest>().update(...).from(...).where(...)
 
 inline fun <reified T : Any> KClass<T>.update(vararg fields: UpdateField<T>?): UpdateWithoutWhere<T> {
-  val table = Table(T::class)
+  val table = Table(this)
   return UpdateWithoutWhere(table, listOfNotNull(*fields), EmptyUpdateFrom)
 }
 
@@ -98,7 +98,7 @@ inline fun <reified T : Any> TableAlias<T>.update(vararg fields: UpdateField<T>?
 }
 
 inline fun <reified T : Any> KClass<T>.updateAll(vararg fields: UpdateField<T>?): Update<T> {
-  val table = Table(T::class)
+  val table = Table(this)
   return Update(table, fields.filterNotNull(), null)
 }
 

@@ -88,13 +88,33 @@ values:
 ```
 
 ## Querying
+Construct a database object for your favorite data source:
+```kotlin
+val database = Database.create(
+  config = DatabaseConfig(
+    host = "localhost",
+    database = "local",
+    user = "local",
+    password = "local",
+    port = 5432,
+  ),
+  poolConfig = ConnectionPoolConfig(
+    maximumPoolSize = 2,
+    minimumIdle = 1,
+    maxLifetime = 300000,
+    connectionTimeout = 30000,
+    idleTimeout = 600000,
+  ),
+  jackson = jackson
+)
+```
 Executing generated SQL in the database just requires calling either `query` or `execute` depending on whether you want to observe the results.
 ```kotlin
 User::class
   .selectAll()
   .where(User::name.like("John %"))
-  .generate(psql)
-  .query(jdmiHandle, timeoutSeconds =  10)
+  .generate(db.dialect)
+  .query(db)
 ```
 ```kotlin
 List<User>(...)

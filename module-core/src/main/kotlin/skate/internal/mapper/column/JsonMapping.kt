@@ -25,18 +25,6 @@ import java.util.Optional
 import java.util.UUID
 import kotlin.reflect.KClass
 
-private val JACKSON: ObjectMapper = ObjectMapper().apply {
-  propertyNamingStrategy = PropertyNamingStrategies.SNAKE_CASE
-  configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-  configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true)
-  configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true)
-  configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
-  configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-  registerKotlinModule()
-  registerModule(JavaTimeModule())
-  findAndRegisterModules()
-}
-
 private fun <T : Any> matches(type: Type?, kClass: KClass<T>): Boolean {
 
   fun Type?.same(c: Class<T>): Boolean {
@@ -66,7 +54,8 @@ private fun <T : Any> matches(type: Type?, kClass: KClass<T>): Boolean {
 }
 
 class JsonArgumentFactory<T : Any>(
-  private val kClass: KClass<T>
+  private val kClass: KClass<T>,
+  private val jackson: ObjectMapper
 ) : ArgumentFactory {
 
   override fun build(type: Type?, value: Any?, config: ConfigRegistry?): Optional<Argument> {
@@ -76,7 +65,7 @@ class JsonArgumentFactory<T : Any>(
           if (value != null) {
             val result = PGobject()
             result.type = "json"
-            result.value = JACKSON.writeValueAsString(value)
+            result.value = jackson.writeValueAsString(value)
             statement.setObject(position, result)
           } else {
             statement.setNull(position, Types.OTHER)
@@ -91,18 +80,19 @@ class JsonArgumentFactory<T : Any>(
 
 internal class JsonColumnMapper<T : Any>(
   private val kClass: KClass<T>,
-  private val typeReference: TypeReference<List<T>>?
+  private val typeReference: TypeReference<List<T>>?,
+  private val jackson: ObjectMapper
 ) : ColumnMapper<T> {
 
   override fun map(resultSet: ResultSet?, position: Int, context: StatementContext?): T? {
     val value = resultSet?.getObject(position, PGobject::class.java)?.value
     return if (value != null) {
-      val tree = JACKSON.readTree(value)
+      val tree = jackson.readTree(value)
       if (tree.isArray) {
         @Suppress("UNCHECKED_CAST")
-        JACKSON.readValue(value, typeReference) as T?
+        jackson.readValue(value, typeReference) as T?
       } else {
-        JACKSON.treeToValue(tree, kClass.java)
+        jackson.treeToValue(tree, kClass.java)
       }
     } else {
       null
@@ -112,12 +102,13 @@ internal class JsonColumnMapper<T : Any>(
 
 class JsonColumnMapperFactory<T : Any>(
   private val kClass: KClass<T>,
-  private val typeReference: TypeReference<List<T>>?
+  private val typeReference: TypeReference<List<T>>?,
+  private val jackson: ObjectMapper
 ) : ColumnMapperFactory {
 
   override fun build(type: Type?, config: ConfigRegistry?): Optional<ColumnMapper<*>> {
     return if (matches(type, kClass)) {
-      Optional.of(JsonColumnMapper(kClass, typeReference))
+      Optional.of(JsonColumnMapper(kClass, typeReference, jackson))
     } else {
       Optional.empty()
     }
@@ -132,11 +123,12 @@ class JsonColumnMapperFactory<T : Any>(
  * It's nullable to avoid breaking changes.
  */
 inline fun <reified T : Any> Jdbi.registerJson(
+  jackson: ObjectMapper,
   typeReference: TypeReference<List<T>>? = null
 ): Jdbi {
   return this
-    .registerArgument(JsonArgumentFactory(T::class))
-    .registerColumnMapper(JsonColumnMapperFactory(T::class, typeReference))
+    .registerArgument(JsonArgumentFactory(T::class, jackson))
+    .registerColumnMapper(JsonColumnMapperFactory(T::class, typeReference, jackson))
 }
 
 /**

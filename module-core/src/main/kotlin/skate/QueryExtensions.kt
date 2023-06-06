@@ -500,13 +500,12 @@ fun not(expression: Expression<Boolean>) =
 // Selection
 
 // We're manually duplicating syntax between KClass<T> and TableAlias<T>.  In the future, we should consider creating
-// some kind of a common base object or interface so the duplication isn't necessary; maybe add a 'from' method that
+// some kind of common base object or interface so the duplication isn't necessary; maybe add a 'from' method that
 // wraps a KClass as a TableReference<T> or something...
-//
 // from<Nest>().select(...).where(...)
 
 inline fun <reified T : Any> KClass<T>.select(): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(listOf(), listOf(), listOf(table))
 }
 
@@ -516,7 +515,7 @@ fun <T : Any> TableAlias<T>.select(): Query {
 }
 
 inline fun <reified T : Any> KClass<T>.select(vararg properties: KProperty1<T, *>): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(properties.map { Projection(Column(it, table), null) }, listOf(), listOf(table))
 }
 
@@ -526,7 +525,7 @@ fun <T : Any> TableAlias<T>.select(vararg properties: KProperty1<T, *>): Query {
 }
 
 inline fun <reified T : Any> KClass<T>.select(vararg expressions: Expression<*>): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(expressions.map { Projection(it, null) }, listOf(), listOf(table))
 }
 
@@ -536,7 +535,7 @@ fun <T : Any> TableAlias<T>.select(vararg expressions: Expression<*>): Query {
 }
 
 inline fun <reified T : Any> KClass<T>.select(vararg projections: Projection): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(projections.toList(), listOf(), listOf(table))
 }
 
@@ -546,7 +545,7 @@ fun <T : Any> TableAlias<T>.select(vararg projections: Projection): Query {
 }
 
 inline fun <reified T : Any> KClass<T>.select(vararg aggregates: Aggregate): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(listOf(), aggregates.toList(), listOf(table))
 }
 
@@ -556,12 +555,12 @@ fun <T : Any> TableAlias<T>.select(vararg aggregates: Aggregate): Query {
 }
 
 inline fun <reified T : Any> KClass<T>.selectAll(): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(listOf(Projection(All(table))), listOf(), listOf(table))
 }
 
 inline fun <reified T : Any> KClass<T>.selectOne(): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(listOf(Projection(Value(1))), listOf(), listOf(table))
 }
 
@@ -571,7 +570,7 @@ fun <T : Any> TableAlias<T>.selectAll(): Query {
 }
 
 inline fun <reified T : Any, reified U : Any> KClass<T>.selectAll(type: KClass<U>): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   val propertyNames = type.memberProperties.filter { it.findAnnotation<Transient>() == null }.map { it.name }.toSet()
   val properties = T::class.memberProperties.filter { propertyNames.contains(it.name) }
   return Query(properties.map { Projection(Column(it, table), null) }, listOf(), listOf(table))
@@ -581,18 +580,18 @@ fun Query.distinct(): Query = copy(distinct = true)
 fun Query.random(): Query = copy(random = true)
 
 fun all() = All<Any>(null)
-inline fun <reified T : Any> KClass<T>.all() = All(Table(T::class))
+inline fun <reified T : Any> KClass<T>.all() = All(Table(this))
 
 fun projectAll() = Projection(all())
 inline fun <reified T : Any> KClass<T>.projectAll() = Projection(this.all())
 
 inline fun <reified T : Any> KClass<T>.selectCount(): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   return Query(listOf(), listOf(countAll()), listOf(table))
 }
 
 inline fun <reified T : Any> KClass<T>.selectCountDistinct(property: KProperty1<T, *>, alias: String? = null): Query {
-  val table = Table(T::class)
+  val table = Table(this)
   val column = Column(property, table)
   return Query(listOf(), listOf(countDistinct(column, alias)), listOf(table))
 }

@@ -1,0 +1,25 @@
+version: '3.6'
+services:
+  db:
+    image: postgis/postgis:14-3.3
+    restart: always
+    environment:
+      POSTGRES_USER: local
+      POSTGRES_PASSWORD: local
+      POSTGRES_DB: local
+    networks:
+      - api_net
+    command: postgres -N 500
+    ports:
+      - 5432:5432
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+
+volumes:
+  cache:
+    driver: local
+
+networks:
+  api_net:
+    name: ci_net
