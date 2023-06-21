@@ -1,5 +1,3 @@
-rootProject.name = 'skate'
-
 include(
   "module-core",
   "module-api",

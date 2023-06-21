@@ -1,5 +1,4 @@
 import co.bird.Library
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
   repositories {
@@ -8,22 +7,40 @@ buildscript {
 }
 
 plugins {
-  id("org.jetbrains.kotlin.jvm") version("1.8.20")
+  id "org.jetbrains.kotlin.jvm" version "1.8.22"
+  id "io.github.gradle-nexus.publish-plugin" version "1.3.0"
 }
 
+group = "co.bird.skate"
+version = "0.1.0"
+
 repositories {
-  mavenLocal()
+  mavenCentral()
+}
+
+nexusPublishing {
+  repositories {
+    sonatype{
+      username = System.getenv("OSSRH_USER")
+      password = System.getenv("OSSRH_PASSWORD")
+      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
+  }
 }
 
 subprojects { p ->
   apply(plugin: "kotlin")
   apply(plugin: "java")
+  apply(plugin: "maven-publish")
+  apply(plugin: "signing")
 
   repositories {
     mavenCentral()
   }
 
-  group = "co.bird.skate"
+  group = group
+  version = version
 
   dependencies {
     implementation(Library.Kotlin.stdlib)
@@ -33,19 +50,53 @@ subprojects { p ->
     toolchain {
       languageVersion = JavaLanguageVersion.of(17)
     }
+    withJavadocJar()
+    withSourcesJar()
   }
 
   kotlin {
-    jvmToolchain {
-      languageVersion.set(JavaLanguageVersion.of(17))
+    jvmToolchain(17)
+  }
+}
+
+subprojects { p ->
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        from(components["java"])
+
+        afterEvaluate {
+          artifactId = p.name
+          group = 'co.bird.skate'
+          version = '0.1.0'
+        }
+
+        pom {
+          name = p.name
+          url = "http://skateql.io"
+          licenses {
+            license {
+              name = "MIT"
+            }
+          }
+          developers {
+            developer {
+              id = "cpoolebird"
+              name = "Connor Poole"
+              email = "cpoole@bird.co"
+            }
+          }
+          scm {
+            connection = "scm:git://git@github.com:birdrides/skate.git"
+            url = "https://github.com/birdrides/skate"
+          }
+        }
+      }
     }
   }
 
-  tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions {
-      jvmTarget = "17"
-      suppressWarnings = true
-    }
+  signing {
+    sign publishing.publications["mavenJava"]
   }
 }
 
