@@ -11,7 +11,10 @@ dependencies {
   implementation(Library.Jackson.core)
   implementation(Library.Jackson.kotlin)
   implementation(Library.Jackson.databind)
+
   implementation(Library.ApacheCommon.lang3)
+
+  implementation(Library.Database.hikari)
 
   testImplementation(Library.Testing.jupiter)
   testImplementation(Library.Testing.assertj)

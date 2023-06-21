@@ -13,8 +13,9 @@ import kotlin.reflect.KClass
 internal typealias Column = Pair<Int, String>
 
 /**
- * We need a better way to extract cacheable fields from a [Query] in order to make this class
- * cacheable. For now we don't have a lot of raw query so it should be fine
+ * In order to make this class cacheable, we are seeking an improved approach for extracting cacheable
+ * fields from a [Query]. Currently, we have a limited number of raw queries, so the existing method should
+ * suffice for now. However, we recognize the need for a more robust solution in the long run.
  */
 internal class JoinSkateMapper<T : Any>(
   private val type: KClass<T>,
