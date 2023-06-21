@@ -43,4 +43,4 @@ bin/
 
 .idea/
 
-./gradle.properties
+gradle\.properties
