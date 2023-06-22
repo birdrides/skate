@@ -1,8 +1,8 @@
 package test
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import org.postgis.Geometry
-import org.postgis.Point
+import net.postgis.jdbc.geometry.Geometry
+import net.postgis.jdbc.geometry.Point
 import skate.Entity
 import skate.TableName
 import java.time.OffsetDateTime

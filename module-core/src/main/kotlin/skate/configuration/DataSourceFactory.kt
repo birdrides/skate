@@ -2,9 +2,9 @@ package skate.configuration
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import org.postgis.PGbox2d
-import org.postgis.PGbox3d
-import org.postgis.PGgeometry
+import net.postgis.jdbc.PGbox2d
+import net.postgis.jdbc.PGbox3d
+import net.postgis.jdbc.PGgeometry
 import org.postgresql.PGConnection
 import java.util.Properties
 import javax.sql.DataSource

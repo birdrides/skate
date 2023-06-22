@@ -1,6 +1,6 @@
 package test
 
-import org.postgis.Point
+import net.postgis.jdbc.geometry.Point
 import skate.TableName
 import skate.Transient
 import java.time.OffsetDateTime

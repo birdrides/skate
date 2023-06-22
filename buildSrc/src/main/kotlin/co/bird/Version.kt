@@ -6,7 +6,7 @@ object Version {
   const val jackson = "2.13.3"
   const val jdbi = "3.28.0"
   const val postgresql = "42.4.1"
-  const val postgis = "2.2.0"
+  const val postgis = "2021.1.0"
   const val hikari = "5.0.1"
   const val junit5 = "5.4.2"
 }

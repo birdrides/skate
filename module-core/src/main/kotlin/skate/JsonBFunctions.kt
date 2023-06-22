@@ -4,7 +4,7 @@ package skate
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.postgis.Point
+import net.postgis.jdbc.geometry.Point
 import skate.JsonFunctions.JACKSON
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1

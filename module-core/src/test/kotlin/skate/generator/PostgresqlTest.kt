@@ -8,8 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
-import org.postgis.Geometry
-import org.postgis.Point
+import net.postgis.jdbc.geometry.Geometry
+import net.postgis.jdbc.geometry.Point
 import skate.All
 import skate.Column
 import skate.Delete
