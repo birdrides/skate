@@ -1,8 +1,8 @@
 package test
 
-import org.postgis.LinearRing
-import org.postgis.Point
-import org.postgis.Polygon
+import net.postgis.jdbc.geometry.LinearRing
+import net.postgis.jdbc.geometry.Point
+import net.postgis.jdbc.geometry.Polygon
 
 data class LatLonRect(
   val minLatitude: Double,

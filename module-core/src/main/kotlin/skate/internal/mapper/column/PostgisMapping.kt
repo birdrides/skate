@@ -6,8 +6,8 @@ import org.jdbi.v3.core.argument.ArgumentFactory
 import org.jdbi.v3.core.config.ConfigRegistry
 import org.jdbi.v3.core.mapper.ColumnMapper
 import org.jdbi.v3.core.statement.StatementContext
-import org.postgis.Geometry
-import org.postgis.PGgeometry
+import net.postgis.jdbc.geometry.Geometry
+import net.postgis.jdbc.PGgeometry
 import org.postgresql.util.PGobject
 import java.lang.reflect.Type
 import java.sql.ResultSet
@@ -41,7 +41,7 @@ class GeometryColumnMapper<T : Geometry> : ColumnMapper<T> {
     val obj = r?.getObject(position)
     return if (obj != null) {
       @Suppress("UNCHECKED_CAST")
-      PGgeometry.geomFromString((obj as PGobject).value) as T
+      PGgeometry((obj as PGobject).value) as T
     } else {
       null
     }

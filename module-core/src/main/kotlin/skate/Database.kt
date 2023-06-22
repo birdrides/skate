@@ -6,10 +6,10 @@ import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.kotlin.useSequence
 import org.jdbi.v3.core.statement.HashPrefixSqlParser
-import org.postgis.Geometry
-import org.postgis.MultiPolygon
-import org.postgis.Point
-import org.postgis.Polygon
+import net.postgis.jdbc.geometry.Geometry
+import net.postgis.jdbc.geometry.MultiPolygon
+import net.postgis.jdbc.geometry.Point
+import net.postgis.jdbc.geometry.Polygon
 import skate.configuration.ConnectionPoolConfig
 import skate.configuration.DataSourceFactory
 import skate.configuration.DatabaseConfig

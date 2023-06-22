@@ -1,6 +1,6 @@
 package skate
 
-import org.postgis.Geometry
+import net.postgis.jdbc.geometry.Geometry
 import org.postgresql.util.PGInterval
 import java.time.OffsetDateTime
 import java.util.UUID
