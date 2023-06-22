@@ -21,6 +21,12 @@ dependencies {
   testImplementation(Library.Testing.mockk)
 }
 
-tasks.withType<Test> {
+tasks.named('test', Test) {
   useJUnitPlatform()
+}
+
+javadoc {
+  if(JavaVersion.current().isJava9Compatible()) {
+    options.addBooleanOption('html5', true)
+  }
 }
