@@ -34,7 +34,7 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `update on conflict inserts record if none exist`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original")
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0f)
 
     MyEntity::class
       .insert()
@@ -54,8 +54,8 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `update on conflict updates record if one exists`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original")
-    val updatedEntity = MyEntity(originalEntity.id, "updated")
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0f)
+    val updatedEntity = MyEntity(originalEntity.id, "updated", 1.0f)
 
     MyEntity::class
       .insert()
@@ -88,8 +88,8 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `do nothing on conflict leaves record alone`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original")
-    val updatedEntity = MyEntity(originalEntity.id, "updated")
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0f)
+    val updatedEntity = MyEntity(originalEntity.id, "updated", 2.0f)
 
     MyEntity::class
       .insert()
@@ -125,7 +125,8 @@ class UpsertIntegrationTest : AbstractTest() {
       """
         CREATE TABLE my_entity (
           id UUID NOT NULL PRIMARY KEY,
-          name TEXT NOT NULL
+          name TEXT NOT NULL,
+          f_ratio float NOT NULL
         );
       """
 
@@ -136,5 +137,6 @@ class UpsertIntegrationTest : AbstractTest() {
 @TableName("my_entity")
 data class MyEntity(
   val id: UUID,
-  val name: String
+  val name: String,
+  val fRatio: Float
 )
