@@ -37,7 +37,6 @@ private val JACKSON: ObjectMapper = ObjectMapper().apply {
 }
 
 private fun <T : Any> matches(type: Type?, kClass: KClass<T>): Boolean {
-
   fun Type?.same(c: Class<T>): Boolean {
     if (TypeUtils.isAssignable(this, c)) {
       return true

@@ -117,8 +117,10 @@ internal class PostgresqlInsertGenerator(
         if (projectionFragments != null) " RETURNING " + projectionFragments.joinToString(", ") { it.sql } else "",
       setup.table.sql(),
       fromFragment.rows,
-      fromFragment.values + (conflictFragments?.flatMap { it.values }
-        ?: listOf()) + (projectionFragments?.flatMap { it.values } ?: listOf())
+      fromFragment.values + (
+        conflictFragments?.flatMap { it.values }
+          ?: listOf()
+        ) + (projectionFragments?.flatMap { it.values } ?: listOf())
     )
   }
 }

@@ -16,7 +16,6 @@ import skate.values
 import skate.where
 import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
-import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import skate.execute
@@ -282,7 +281,6 @@ class SkateEnumTest : AbstractTest() {
     )
 
     try {
-
       val a = SkateTestEnumList(items = listOf(FOO))
       val b = SkateTestEnumList(items = listOf(BAR, BAG))
       val c = SkateTestEnumList(items = listOf())

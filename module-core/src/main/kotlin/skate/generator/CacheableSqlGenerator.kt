@@ -25,7 +25,6 @@ internal interface CacheableSqlGenerator<E> : SqlGenerator<E> {
       generator: SqlGenerator<E>,
       crossinline key: (E) -> String
     ): CacheableSqlGenerator<E> {
-
       return object : CacheableSqlGenerator<E> {
 
         private val cache = ConcurrentHashMap<String, String>()

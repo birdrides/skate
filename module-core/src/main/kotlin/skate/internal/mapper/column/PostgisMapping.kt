@@ -41,7 +41,7 @@ class GeometryColumnMapper<T : Geometry> : ColumnMapper<T> {
     val obj = r?.getObject(position)
     return if (obj != null) {
       @Suppress("UNCHECKED_CAST")
-      PGgeometry((obj as PGobject).value) as T
+      PGgeometry((obj as PGobject).value).geometry as T
     } else {
       null
     }

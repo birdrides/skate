@@ -21,7 +21,7 @@ data class Task(
   val createdAt: OffsetDateTime = OffsetDateTime.now(),
   val updatedAt: OffsetDateTime = OffsetDateTime.now(),
   val openedAt: OffsetDateTime = OffsetDateTime.now(),
-  val closedAt: OffsetDateTime? = null,
+  val closedAt: OffsetDateTime? = null
 ) : Entity
 
 enum class TaskKind {

@@ -526,7 +526,8 @@ class Postgresql : Dialect {
     val expressionQuery = generate(order.expression)
     return Fragment(
       listOfNotNull(
-        expressionQuery.sql, if (order.descending) "DESC" else "ASC",
+        expressionQuery.sql,
+        if (order.descending) "DESC" else "ASC",
         when (order.nullsPref) {
           NullsOrderPref.NULLS_FIRST -> "NULLS FIRST"
           NullsOrderPref.NULLS_LAST -> "NULLS LAST"

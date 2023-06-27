@@ -46,10 +46,12 @@ fun jsonBLiteral(x: Any?): Expression<Any?> {
     val asList = x.toList()
     if (asList.isEmpty()) {
       Array(listOf(), String::class) as Expression<Any?>
-    } else when (asList[0]) {
-      is String -> (asList as List<String>).array() as Expression<Any?>
-      is Number -> (asList as List<Number>).array() as Expression<Any?>
-      else -> asList.map { it.toJsonMap() }.array() as Expression<Any?>
+    } else {
+      when (asList[0]) {
+        is String -> (asList as List<String>).array() as Expression<Any?>
+        is Number -> (asList as List<Number>).array() as Expression<Any?>
+        else -> asList.map { it.toJsonMap() }.array() as Expression<Any?>
+      }
     }
   } else {
     literal(x)

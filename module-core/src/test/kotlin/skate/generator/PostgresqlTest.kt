@@ -1077,9 +1077,13 @@ class PostgresqlTest {
       Vehicle::class.update(Vehicle::batteryLevel to (Vehicle::batteryLevel + 10))
         .from(bt, z)
         .where(
-          (bt[VehicleTrack::vehicleId] eq Vehicle::id) and (z[Zone::id] eq Vehicle::zoneId and (z[Zone::name] eq literal(
-            "Santa Monica"
-          )))
+          (bt[VehicleTrack::vehicleId] eq Vehicle::id) and (
+            z[Zone::id] eq Vehicle::zoneId and (
+              z[Zone::name] eq literal(
+                "Santa Monica"
+              )
+              )
+            )
         )
     )
 
@@ -1286,7 +1290,8 @@ class PostgresqlTest {
       psql.generate(
         Vehicle::class.selectAll()
           .distinctOn(
-            Vehicle::estimatedRange, Vehicle::batteryLevel
+            Vehicle::estimatedRange,
+            Vehicle::batteryLevel
           )
           .where(
             and(

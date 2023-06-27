@@ -15,5 +15,5 @@ data class VehicleTrack(
   val batteryLevel: Int? = null,
   val locked: Boolean? = null,
   val distance: Int? = null,
-  val vehicleId: UUID = UUID.randomUUID(),
+  val vehicleId: UUID = UUID.randomUUID()
 )

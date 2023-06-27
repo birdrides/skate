@@ -38,6 +38,7 @@ data class Corral(
   val riderParkingNotes: String? = null,
 
   @Deprecated("Use creator")
-  @Transient val creatorDisplayName: String? = null,
+  @Transient
+  val creatorDisplayName: String? = null,
   @Transient val creator: User? = null
 )

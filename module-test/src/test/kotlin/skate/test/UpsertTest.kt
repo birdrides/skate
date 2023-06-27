@@ -1,5 +1,6 @@
 package skate.test
 
+import net.postgis.jdbc.geometry.Point
 import skate.TableName
 import skate.doNothing
 import skate.eq
@@ -38,7 +39,7 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `update on conflict inserts record if none exist`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, null)
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, null, Point(1.0, 10.0, 10.0))
 
     MyEntity::class
       .insert()
@@ -58,8 +59,11 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `update on conflict updates record if one exists`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, uuidVal)
-    val updatedEntity = MyEntity(originalEntity.id, "updated", 1.0, uuidVal)
+    val originalPoint = Point(1.0, 10.0, 10.0).also {
+      it.setSrid(4326)
+    }
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, uuidVal, originalPoint)
+    val updatedEntity = MyEntity(originalEntity.id, "updated", 1.0, uuidVal, originalPoint)
 
     MyEntity::class
       .insert()
@@ -88,12 +92,13 @@ class UpsertIntegrationTest : AbstractTest() {
       .queryFirst<MyEntity>(db)
 
     assertEquals(updatedEntity, result)
+    assertEquals(originalPoint, result?.location)
   }
 
   @Test
   fun `do nothing on conflict leaves record alone`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, uuidVal)
-    val updatedEntity = MyEntity(originalEntity.id, "updated", 2.0, uuidVal)
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, uuidVal, Point(1.0, 10.0, 10.0))
+    val updatedEntity = MyEntity(originalEntity.id, "updated", 2.0, uuidVal, Point(1.0, 10.0, 10.0))
 
     MyEntity::class
       .insert()
@@ -138,7 +143,8 @@ class UpsertIntegrationTest : AbstractTest() {
           id UUID NOT NULL PRIMARY KEY,
           name TEXT NOT NULL,
           f_ratio double precision NOT NULL,
-          uuid_val UUID
+          uuid_val UUID,
+          location geometry(PointZ, 4326) NOT NULL
         );
       """
 
@@ -153,4 +159,5 @@ data class MyEntity(
   @ColumnName("f_ratio")
   val fratio: Double,
   val uuidVal: UUID? = null,
+  val location: Point
 )

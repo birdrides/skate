@@ -37,14 +37,14 @@ abstract class AbstractTest {
         database = "local",
         user = "local",
         password = "local",
-        port = 5432,
+        port = 5432
       ),
       poolConfig = ConnectionPoolConfig(
         maximumPoolSize = 2,
         minimumIdle = 1,
         maxLifetime = 300000,
         connectionTimeout = 30000,
-        idleTimeout = 600000,
+        idleTimeout = 600000
       ),
       jackson = jackson
     )
