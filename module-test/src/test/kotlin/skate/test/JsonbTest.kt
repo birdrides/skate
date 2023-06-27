@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.postgis.Point
 import skate.TableName
 import skate.eq
 import skate.execute

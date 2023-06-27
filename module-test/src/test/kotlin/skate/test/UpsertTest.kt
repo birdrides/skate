@@ -16,8 +16,10 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import skate.ColumnName
 import skate.execute
 import skate.executeRaw
+import skate.generator.toUnderscore
 import skate.queryFirst
 
 class UpsertIntegrationTest : AbstractTest() {
@@ -32,9 +34,11 @@ class UpsertIntegrationTest : AbstractTest() {
     db.executeRaw(DROP_TABLE_SQL)
   }
 
+  val uuidVal = UUID.randomUUID()
+
   @Test
   fun `update on conflict inserts record if none exist`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original")
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, null)
 
     MyEntity::class
       .insert()
@@ -54,8 +58,8 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `update on conflict updates record if one exists`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original")
-    val updatedEntity = MyEntity(originalEntity.id, "updated")
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, uuidVal)
+    val updatedEntity = MyEntity(originalEntity.id, "updated", 1.0, uuidVal)
 
     MyEntity::class
       .insert()
@@ -88,8 +92,8 @@ class UpsertIntegrationTest : AbstractTest() {
 
   @Test
   fun `do nothing on conflict leaves record alone`() {
-    val originalEntity = MyEntity(UUID.randomUUID(), "original")
-    val updatedEntity = MyEntity(originalEntity.id, "updated")
+    val originalEntity = MyEntity(UUID.randomUUID(), "original", 1.0, uuidVal)
+    val updatedEntity = MyEntity(originalEntity.id, "updated", 2.0, uuidVal)
 
     MyEntity::class
       .insert()
@@ -120,12 +124,21 @@ class UpsertIntegrationTest : AbstractTest() {
     assertEquals(originalEntity, result)
   }
 
+  @Test
+  fun testSingleLetterUnderscore() {
+    val underscore = "fRatio".toUnderscore()
+
+    assertEquals("f_ratio", underscore)
+  }
+
   companion object {
     private const val CREATE_TABLE_SQL =
       """
         CREATE TABLE my_entity (
           id UUID NOT NULL PRIMARY KEY,
-          name TEXT NOT NULL
+          name TEXT NOT NULL,
+          f_ratio double precision NOT NULL,
+          uuid_val UUID
         );
       """
 
@@ -136,5 +149,8 @@ class UpsertIntegrationTest : AbstractTest() {
 @TableName("my_entity")
 data class MyEntity(
   val id: UUID,
-  val name: String
+  val name: String,
+  @ColumnName("f_ratio")
+  val fratio: Double,
+  val uuidVal: UUID? = null,
 )

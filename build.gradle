@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "co.bird.skate"
-version = "0.2.1"
+version = "0.2.2"
 
 repositories {
   mavenCentral()
@@ -67,13 +67,14 @@ subprojects { p ->
 
         afterEvaluate {
           artifactId = p.name
-          group = 'co.bird.skate'
-          version = '0.2.1'
+          group = group
+          version = version
         }
 
         pom {
           name = p.name
           url = "http://skateql.io"
+          description = "Skate is a SQL generation and query library for Kotlin"
           licenses {
             license {
               name = "MIT"

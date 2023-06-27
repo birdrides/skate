@@ -4,6 +4,7 @@ dependencies {
   api(project(":module-api"))
 
   api(Library.Jdbi.kotlin)
+  api(Library.Jdbi.postgres)
   api(Library.Database.postgisJdbc)
 
   implementation(Library.Kotlin.reflect)
