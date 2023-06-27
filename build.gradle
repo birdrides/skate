@@ -40,8 +40,8 @@ subprojects { p ->
     mavenCentral()
   }
 
-  group = group
-  version = version
+  group = "co.bird.skate"
+  version = "0.2.2"
 
   dependencies {
     implementation(Library.Kotlin.stdlib)
