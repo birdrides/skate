@@ -10,7 +10,6 @@ import net.postgis.jdbc.geometry.Geometry
 import net.postgis.jdbc.geometry.MultiPolygon
 import net.postgis.jdbc.geometry.Point
 import net.postgis.jdbc.geometry.Polygon
-import org.jdbi.v3.postgres.PostgresPlugin
 import org.jdbi.v3.postgres.UUIDArgumentFactory
 import skate.configuration.ConnectionPoolConfig
 import skate.configuration.DataSourceFactory
