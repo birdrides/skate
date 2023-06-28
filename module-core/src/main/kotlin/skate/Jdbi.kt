@@ -15,6 +15,8 @@ import skate.internal.mapper.SkateMappers
 import skate.internal.mapper.column.EnumArgument
 import java.sql.Types
 import java.util.UUID
+import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
 
 fun <T : SqlStatement<T>> T.bindValues(values: List<Any>): T {
   if (values.count() > Short.MAX_VALUE) {
@@ -52,6 +54,19 @@ fun <T : SqlStatement<T>> T.bindValues(values: List<Any>): T {
     }
   }
   return this
+}
+
+fun <S : SqlStatement<S>, T: Any> S.bindRows(kClass: KClass<T>, prefix: String, rows: List<Any>): S {
+  return this.apply {
+    for ((index, row) in rows.withIndex()) {
+      kClass.memberProperties.forEach { prop ->
+        println("prop: $prop")
+        val value = prop.getter.call(row)
+        bind("$prefix$index.${prop.name}", value)
+      }
+      //bindBean("$prefix$index", row)
+    }
+  }
 }
 
 inline fun <reified T : Any> ResultBearing.mapResults(query: Query? = null): ResultIterable<T> {
@@ -105,18 +120,14 @@ inline fun <reified T : Any> SelectStatement.queryFirst(
   return query<T>(handle, timeoutSeconds).firstOrNull()
 }
 
-fun InsertStatement<*>.execute(
+inline fun <reified T: Any>InsertStatement<T>.execute(
   handle: Handle,
   timeoutSeconds: Int
 ): Int {
   return handle
     .createUpdate(sql)
     .setQueryTimeout(timeoutSeconds)
-    .apply {
-      for ((index, row) in rows.withIndex()) {
-        bindBean("$prefix$index", row)
-      }
-    }
+    .bindRows(T::class, prefix, rows)
     .bindValues(values)
     .execute()
 }
@@ -127,11 +138,7 @@ inline fun <reified T : Any> InsertStatement<T>.query(
 ): List<T> {
   return handle.createQuery(sql)
     .setQueryTimeout(timeoutSeconds)
-    .apply {
-      for ((index, row) in rows.withIndex()) {
-        bindBean("$prefix$index", row)
-      }
-    }
+    .bindRows(this., prefix, rows)
     .bindValues(values)
     .mapResults<T>(query = null)
     .list()
