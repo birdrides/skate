@@ -1,12 +1,7 @@
 package skate.internal.mapper.column
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategies
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.apache.commons.lang3.reflect.TypeUtils
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.argument.Argument
@@ -16,7 +11,6 @@ import org.jdbi.v3.core.mapper.ColumnMapper
 import org.jdbi.v3.core.mapper.ColumnMapperFactory
 import org.jdbi.v3.core.statement.StatementContext
 import org.postgresql.util.PGobject
-import skate.internal.mapper.column.jsonb.JavaTimeModule
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.sql.ResultSet
@@ -26,7 +20,6 @@ import java.util.UUID
 import kotlin.reflect.KClass
 
 private fun <T : Any> matches(type: Type?, kClass: KClass<T>): Boolean {
-
   fun Type?.same(c: Class<T>): Boolean {
     if (TypeUtils.isAssignable(this, c)) {
       return true

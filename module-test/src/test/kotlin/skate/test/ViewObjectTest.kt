@@ -142,6 +142,6 @@ class ViewObjectTest : AbstractTest() {
   @TableName("provider_incoming_transactions")
   data class PaymentProviderIncomingTransaction(
     val id: UUID = UUID.randomUUID(),
-    val providerUserId: UUID,
+    val providerUserId: UUID
   )
 }

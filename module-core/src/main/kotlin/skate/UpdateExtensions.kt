@@ -38,11 +38,15 @@ inline fun <reified TSource : Any> InsertWithoutSource<*>.from(callback: TableAl
   return this.from(callback(alias))
 }
 
-fun <T : Any> Insert<T>.returning(vararg properties: KProperty1<T, *>) = InsertWithProjections(this, properties.map {
-  Projection(
-    Column(it, this.insert.table), null
-  )
-})
+fun <T : Any> Insert<T>.returning(vararg properties: KProperty1<T, *>) = InsertWithProjections(
+  this,
+  properties.map {
+    Projection(
+      Column(it, this.insert.table),
+      null
+    )
+  }
+)
 
 fun <T : Any> Insert<T>.returning(vararg projections: Projection) = InsertWithProjections(this, projections.toList())
 fun <T : Any> Insert<T>.returningAll() = InsertWithProjections(this, listOf(Projection(All<Any>())))
@@ -65,11 +69,15 @@ fun <T : Any> InsertConflict<T>.update(vararg columns: KProperty1<T, Any?>): Ins
 }
 
 fun <T : Any> InsertConflictAction<T>.returning(vararg properties: KProperty1<T, *>) =
-  InsertConflictActionWithProjections(this, properties.map {
-    Projection(
-      Column(it, this.conflict.insert.insert.table), null
-    )
-  })
+  InsertConflictActionWithProjections(
+    this,
+    properties.map {
+      Projection(
+        Column(it, this.conflict.insert.insert.table),
+        null
+      )
+    }
+  )
 
 fun <T : Any> InsertConflictAction<T>.returning(vararg projections: Projection) =
   InsertConflictActionWithProjections(this, projections.toList())
@@ -159,11 +167,14 @@ fun <T : Any> UpdateWithoutWhere<T>.from(fromClause: Query, alias: TableAlias<*>
 fun <T : Any> UpdateWithoutWhere<T>.from(query: Query): UpdateWithoutWhere<T> =
   UpdateWithoutWhere(this.table, this.fields, UpdateFromSubQueryWithIgnoredAlias(query))
 
-fun <T : Any> Update<T>.returning(vararg properties: KProperty1<T, *>) = this.copy(projections = properties.map {
-  Projection(
-    Column(it, this.table), null
-  )
-})
+fun <T : Any> Update<T>.returning(vararg properties: KProperty1<T, *>) = this.copy(
+  projections = properties.map {
+    Projection(
+      Column(it, this.table),
+      null
+    )
+  }
+)
 
 fun <T : Any> Update<T>.returning(vararg projections: Projection) = this.copy(projections = projections.toList())
 fun <T : Any> Update<T>.returning(vararg intoFields: IntoField<*, *>) = this.copy(intoFields = intoFields.toList())

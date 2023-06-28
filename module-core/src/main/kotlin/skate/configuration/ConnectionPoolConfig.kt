@@ -11,4 +11,3 @@ data class ConnectionPoolConfig(
   val leakDetectionThreshold: Long = 60_000L,
   val transactionIsolation: String? = null
 )
-

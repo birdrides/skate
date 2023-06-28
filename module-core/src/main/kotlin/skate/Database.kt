@@ -87,7 +87,7 @@ interface Database {
 inline fun <reified T : Any> Database.queryRaw(
   sql: String,
   values: List<Any>,
-  query: Query? = null,
+  query: Query? = null
 ): List<T> {
   return jdbi.queryRaw(sql, values, query, defaultQueryTimeoutSeconds)
 }
@@ -240,4 +240,3 @@ fun Database.nextValue(
 ): Long {
   return jdbi.withHandle<Long, Exception> { it.nextValue(sequence, defaultQueryTimeoutSeconds) }
 }
-

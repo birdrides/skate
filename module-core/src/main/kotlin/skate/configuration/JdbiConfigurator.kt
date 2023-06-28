@@ -25,4 +25,3 @@ interface JdbiConfigurator {
     override val queryTimeoutSeconds: Int = 10
   }
 }
-

@@ -9,6 +9,7 @@ buildscript {
 plugins {
   id "org.jetbrains.kotlin.jvm" version "1.8.22"
   id "io.github.gradle-nexus.publish-plugin" version "1.3.0"
+  id("org.jlleitschuh.gradle.ktlint") version("11.4.1")
 }
 
 group = "co.bird.skate"
@@ -39,8 +40,8 @@ subprojects { p ->
     mavenCentral()
   }
 
-  group = group
-  version = version
+  group = "co.bird.skate"
+  version = "0.2.2"
 
   dependencies {
     implementation(Library.Kotlin.stdlib)
@@ -56,6 +57,13 @@ subprojects { p ->
 
   kotlin {
     jvmToolchain(17)
+  }
+
+  apply(plugin: "org.jlleitschuh.gradle.ktlint")
+  ktlint {
+    disabledRules = ["filename", "import-ordering"]
+    outputToConsole = true
+    outputColorName = "RED"
   }
 }
 

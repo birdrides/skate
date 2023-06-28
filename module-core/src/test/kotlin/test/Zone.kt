@@ -19,5 +19,5 @@ data class Zone(
   val timeZone: String? = "America/Los_Angeles",
   val createdAt: OffsetDateTime = OffsetDateTime.now(),
   val updatedAt: OffsetDateTime? = null,
-  val deletedAt: OffsetDateTime? = null,
+  val deletedAt: OffsetDateTime? = null
 ) : Entity

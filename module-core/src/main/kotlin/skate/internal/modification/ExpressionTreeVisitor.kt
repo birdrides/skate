@@ -32,7 +32,6 @@ import skate.Value
 @Suppress("UNCHECKED_CAST")
 abstract class ExpressionTreeVisitor {
   fun <R> visit(expression: Expression<R>): Expression<R> {
-
     return when (expression) {
       is Column<*, R> -> visitColumn(expression)
       is Value<R> -> visitValue(expression)

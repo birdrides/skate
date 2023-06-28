@@ -134,7 +134,7 @@ internal interface SqlGenerator<E> {
           val annotation = e.type.findAnnotation<TableName>()
           val name = annotation?.name
           return name ?: e.type.simpleName?.toUnderscore()
-          ?: throw IllegalArgumentException("Entity class must have name!")
+            ?: throw IllegalArgumentException("Entity class must have name!")
         }
       },
       key = { table ->
@@ -162,8 +162,9 @@ private fun <C : Any> findConstructor(type: KClass<C>): KFunction<C> {
       c.factoryFunction
     }
 
-    type.primaryConstructor != null -> type.primaryConstructor
-      ?: throw IllegalArgumentException("A bean, ${type.simpleName} was mapped which was not instantiable (cannot find appropriate constructor)")
+    type.primaryConstructor != null ->
+      type.primaryConstructor
+        ?: throw IllegalArgumentException("A bean, ${type.simpleName} was mapped which was not instantiable (cannot find appropriate constructor)")
 
     type.constructors.size == 1 -> type.constructors.first()
     else -> throw IllegalArgumentException("A bean, ${type.simpleName} was mapped which was not instantiable (cannot find appropriate constructor)")

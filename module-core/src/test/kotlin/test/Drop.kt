@@ -21,5 +21,5 @@ data class Drop(
   val unclaimAt: OffsetDateTime? = null,
   val updatedAt: OffsetDateTime? = OffsetDateTime.now(),
   val metadata: Map<String, Any> = mapOf(),
-  val location: Point?,
+  val location: Point?
 ) : Entity

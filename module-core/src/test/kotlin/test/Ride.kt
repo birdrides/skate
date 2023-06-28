@@ -21,5 +21,5 @@ data class Ride(
   val cost: Int? = null,
   val endPhotoUrl: String? = null,
   val zoneId: UUID? = null,
-  val partnerId: UUID? = null,
+  val partnerId: UUID? = null
 ) : Entity
